@@ -12,13 +12,13 @@ RUN apk add --no-cache libc6-compat curl tini
 
 # ---- deps ----
 FROM base AS deps
-COPY web/package.json web/package-lock.json ./
+COPY package.json package-lock.json ./
 RUN npm ci
 
 # ---- builder ----
 FROM base AS builder
 COPY --from=deps /app/node_modules ./node_modules
-COPY web/ .
+COPY . .
 ENV NEXT_TELEMETRY_DISABLED=1
 RUN npm run build
 
